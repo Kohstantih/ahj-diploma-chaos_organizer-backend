@@ -2,6 +2,7 @@ class Counters {
     constructor() {
         this.box = {
             favorites: 0,
+            image: 0,
             video: 0,
             audio: 0,
             other: 0,
@@ -38,6 +39,10 @@ class Counters {
                 count: this.box.favorites,
             },
             {
+                filter: 'image',
+                count: this.box.image,
+            },
+            {
                 filter: 'video',
                 count: this.box.video,
             },
@@ -66,6 +71,20 @@ class Counters {
                 count: this.box.all,
             },
         ];
+    }
+
+    clearCounters() {
+        this.box = {
+            favorites: 0,
+            image: 0,
+            video: 0,
+            audio: 0,
+            other: 0,
+            links: 0,
+            text: 0,
+            sticker: 0,
+            all: 0,
+        };
     }
 }
 

@@ -1,5 +1,6 @@
 const http = require('http');
 const Koa = require('koa');
+const path = require('path');
 const { koaBody } = require('koa-body');
 const cors = require('@koa/cors');
 const WS = require('ws');
@@ -12,6 +13,9 @@ const counters = require('./db/counters');
 const app = new Koa();
 
 app.use(cors('Access-Control-Allow-Origin', '*'));
+
+const public = path.join(__dirname, '/public');
+app.use(require('koa-static')(public));
 
 app.use(koaBody({
     urlencoded: true,
@@ -28,6 +32,10 @@ const wsServer = new WS.Server({
 });
 
 wsServer.on('connection', (ws) => {
+    // ws.on('close', (e) => {
+    //   console.log('ws close', e);
+    // });
+
     // ws.on('error', console.error);
 
     // ws.on('open', function open() {
@@ -50,10 +58,11 @@ wsServer.on('connection', (ws) => {
     });
 
     const listCounters = counters.getFiltersList();
+    const listMessages = messages.getMessagesList('all', 10);
 
       ws.send(JSON.stringify({
         listCounters,
-        listMessages: messages.box,
+        listMessages,
       }));
   });
 
